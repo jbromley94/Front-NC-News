@@ -1,0 +1,186 @@
+.App {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.messagebox {
+  width: 75%;
+}
+
+.articBox {
+  background-color: black;
+  padding-left: 15%;
+  padding-right: 15%;
+  border: solid;
+  border-radius: 5%;
+  color: white;
+  border-color: white;
+}
+
+.topicUserPics {
+  display: flex;
+  flex-direction: row;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+.topicBlock {
+  padding: 3%;
+  justify-content: center;
+  text-align: center;
+}
+
+.allCommentsBoxes {
+  padding-top: 10%;
+  background-color: rgba(211, 211, 211, 0.438);
+  padding-left: 15%;
+  padding-right: 15%;
+}
+
+.image {
+  width: 250px;
+  height: 250px;
+  border-radius: 20%;
+}
+
+.commentAndSingArticle {
+  background-color: rgba(173, 216, 230, 0.61);
+  border: solid;
+  border-radius: 5%;
+  margin-top: 15px;
+}
+
+.commentAndSingArticle:nth-child(odd) {
+  background-color: rgba(211, 211, 211, 0.438);
+  border: solid;
+  border-radius: 5%;
+}
+
+.voteAndDelete{
+  background-color: inherit;
+  border:none;
+  padding:15px 32px;
+}
+
+.footer {
+  text-align: center;
+  padding-top: 5%;
+  font-size: 10px;
+}
+
+.errorImg {
+  width: 450px;
+  border-radius: 10%;
+  justify-content: center;
+}
+
+.voteButtons{
+  background-color: inherit;
+  justify-content: center;
+  text-align: center;
+  color :white;
+}
+
+.fas {
+  width: auto;
+  background: #67c656;
+  padding: 20px;
+  color: black;
+  font-size:2em;
+}
+
+.logHeading {
+  display: flex;
+  background-color: black;
+  justify-content: center;
+}
+
+header {
+  background-color: black;
+  position: fixed;
+  top: 0;
+}
+
+.logPage {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: auto;
+}
+
+.underHeading {
+  display: flex;
+  padding-top: 207px;
+}
+
+.underLogHeading {
+  display: flex;
+  padding-top: 135px;
+}
+
+@media (max-width: 540px) {
+  .underHeading {
+    padding-top: 278px;
+  }
+}
+
+.submitBut {
+  background-color: black;
+  color: white;
+  font-family: "Playfair Display", serif;
+}
+
+.Title {
+  color: white;
+  font-family: "Playfair Display", serif;
+  font-weight: 900;
+  font-size: 300%;
+  text-transform: uppercase;
+  line-height: 72px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 180px) {
+  .underHeading {
+    padding-top: 332px;
+  }
+}
+
+.TitleDiv {
+  display: flex;
+  color: black;
+  text-align: center;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.mapTitles {
+  font-family: "Playfair Display", serif;
+  font-size: 16px;
+}
+
+.commentBox {
+  font-size: 12px;
+}
+
+.createdInfo {
+  float: left;
+  padding-left: 1.5%;
+}
+
+.creator {
+  float: right;
+  padding-right: 1.5%;
+}
+
+h1 {
+  font-size: 70px;
+  text-decoration: underline;
+  font-family: "Cinzel", serif;
+}

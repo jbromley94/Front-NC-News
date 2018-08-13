@@ -1,0 +1,11 @@
+ .Title{
+  color: white;
+  font-family: "Playfair Display", serif;
+  font-weight: 900;
+  font-size: 300%;
+  text-transform: uppercase;
+  line-height: 72px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}

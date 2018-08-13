@@ -1,28 +1,39 @@
 import React, { Component } from "react";
 import "./Articles.css";
 import { fetchArticles } from "../../Api";
-import {Link, Redirect} from "react-router-dom"
-
+import { Link, Redirect } from "react-router-dom";
+import propTypes from "prop-types";
 
 class Articles extends Component {
   state = {
     allArticles: [],
     errorCode: null,
-    errorMSGS: ""
+    errorMSGS: "",
+    isLoading: true
   };
   render() {
-    const {errorCode, errorMSGS} = this.state
+    const { errorCode, errorMSGS, allArticles } = this.state;
     if (errorCode) {
-      return <Redirect to={{
-        pathname: `/error/${errorCode}`,
-        state: { from: "articles", detailOnErr: errorMSGS }
-      }} />
+      return (
+        <Redirect
+          to={{
+            pathname: `/error/${errorCode}`,
+            state: { from: "articles", detailOnErr: errorMSGS }
+          }}
+        />
+      );
     }
-    return (
+    return this.state.isLoading ? (
+      <img
+        className="TitleDiv"
+        src="https://gifer.com/i/7TwJ.gif"
+        alt="loader"
+      />
+    ) : (
       <div className="TitleDiv">
         <h1>Articles</h1>
         <section>
-          {this.state.allArticles.map(article => {
+          {allArticles.map(article => {
             let user = this.props.allUsers.find(item => {
               return item._id === article.created_by;
             });
@@ -43,20 +54,26 @@ class Articles extends Component {
       </div>
     );
   }
+  
   componentDidMount() {
     fetchArticles()
       .then(response => {
         this.setState({
+          isLoading: false,
           allArticles: response.data.all_articles
         });
       })
-      .catch((err) => {
+      .catch(err => {
         this.setState({
           errorMSGS: err.response.data,
           errorCode: err.response.status
-        })
-      })
+        });
+      });
   }
+}
+
+Articles.propTypes = {
+  allUsers: propTypes.array.isRequired
 }
 
 export default Articles;

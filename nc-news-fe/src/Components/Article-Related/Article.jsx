@@ -9,6 +9,7 @@ import {
   deleteComment
 } from "../../Api";
 import { Redirect } from "react-router-dom";
+import propTypes from "prop-types";
 
 class Article extends Component {
   state = {
@@ -23,7 +24,14 @@ class Article extends Component {
     errorMSGS: ""
   };
   render() {
-    const { article, voteChangeArt, newMsg, errorCode, errorMSGS } = this.state;
+    const {
+      article,
+      voteChangeArt,
+      newMsg,
+      errorCode,
+      errorMSGS,
+      comments
+    } = this.state;
     const user = this.props.allUsers.find(item => {
       return item._id === article.created_by;
     });
@@ -38,32 +46,45 @@ class Article extends Component {
       );
     }
     if (!user) return null;
-    return <div className="TitleDiv">
+    return (
+      <div className="TitleDiv">
         <h1>{`${article.title}`}</h1>
         <div className="articBox">
           <p>{`${article.body}`}</p>
           <p>{`${article.votes + voteChangeArt}`}</p>
+          <div className="createdInfo">
           <p>{`${article.created_at.slice(0, 10)}`}</p>
           <p>{`${article.created_at.slice(11, 16)}`}</p>
-          <p>{`${user.username}`}</p>
+          </div>
+          <p className="creator">{`${user.username}`}</p>
           <div className="voteButtons">
-            <button className="voteAndDelete" onClick={() => this.handleVote("up", "article", article._id)}>
-            vote up
+            <button
+              className="voteAndDelete"
+              onClick={() => this.handleVote("up", "article", article._id)}
+            >
+              vote up
               <i className="fas fa-arrow-alt-circle-up" />
               vote up
             </button>
-            <button className="voteAndDelete" onClick={() => this.handleVote("down", "article", article._id)}>
+            <button
+              className="voteAndDelete"
+              onClick={() => this.handleVote("down", "article", article._id)}
+            >
               <i className="fas fa-arrow-alt-circle-down" />
             </button>
           </div>
         </div>
         <section className="allCommentsBoxes">
-          {this.state.comments.map(comment => {
+          {comments.map(comment => {
             let comUser = this.props.allUsers.find(item => {
               return item._id === comment.created_by;
             });
             if (!comUser) return null;
-            return <div key={comment._id} className="commentAndSingArticle commentBox">
+            return (
+              <div
+                key={comment._id}
+                className="commentAndSingArticle commentBox"
+              >
                 <p className="mapTitles">{comment.body}</p>
                 <p className="mapVotes">{comment.votes}</p>
                 <div className="createdInfo">
@@ -71,20 +92,37 @@ class Article extends Component {
                   <p>{`${comment.created_at.slice(11, 16)}`}</p>
                 </div>
                 <p className="creator">{`${comUser.username}`}</p>
-                <button className="voteAndDelete" onClick={() => this.handleUpCom(comment._id)}>
+                <button
+                  className="voteAndDelete"
+                  onClick={() => this.handleUpCom(comment._id)}
+                >
                   <i className="fas fa-arrow-alt-circle-up" />
                 </button>
-                <button className="voteAndDelete" onClick={() => this.handleDownCom(comment._id)}>
+                <button
+                  className="voteAndDelete"
+                  onClick={() => this.handleDownCom(comment._id)}
+                >
                   <i className="fas fa-arrow-alt-circle-down" />
                 </button>
-                <button className="voteAndDelete" onClick={() => this.handleDelete(comment._id)}>
-                  <i class="fas fa-times" />
+                <button
+                  className="voteAndDelete"
+                  onClick={() => this.handleDelete(comment._id)}
+                >
+                  <i className="fas fa-times" />
                 </button>
-              </div>;
+              </div>
+            );
           })}
         </section>
-        <input className="messagebox" value={newMsg} placeholder="Type comment and press ENTER to submit" onKeyUp={this.handleKeyUp} onChange={this.handleChange} />
-      </div>;
+        <input
+          className="messagebox"
+          value={newMsg}
+          placeholder="Type comment and press ENTER to submit"
+          onKeyUp={this.handleKeyUp}
+          onChange={this.handleChange}
+        />
+      </div>
+    );
   }
 
   componentDidMount() {
@@ -106,6 +144,7 @@ class Article extends Component {
         });
       });
   }
+  
   componentDidUpdate() {
     if (this.state.needToUpdate === true) {
       const { article_id } = this.props.props.match.params;
@@ -148,9 +187,10 @@ class Article extends Component {
         created_by: id
       };
 
-      postComment(this.state.article._id, sentText).then(() => {
-        this.setState({ newMsg: "", needToUpdate: true });
-      })
+      postComment(this.state.article._id, sentText)
+        .then(() => {
+          this.setState({ newMsg: "", needToUpdate: true });
+        })
         .catch(err => {
           this.setState({
             errorMSGS: err.response.data,
@@ -208,5 +248,11 @@ class Article extends Component {
     }
   };
 }
+
+Article.propTypes = {
+  allUsers: propTypes.array.isRequired,
+  currentUser: propTypes.string.isRequired
+}
+
 
 export default Article;

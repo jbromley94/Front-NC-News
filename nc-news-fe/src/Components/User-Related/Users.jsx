@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./Users.css";
 import { Link } from "react-router-dom";
+import propTypes from "prop-types";
 
 
 class Users extends Component {
@@ -14,24 +15,38 @@ class Users extends Component {
       "https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fcdn.quotesgram.com%2Fimg%2F23%2F96%2F1432022622-gg-allin-freaks-patch-ip11_2_.jpg&f=1"
     ]
   };
+  
   render() {
-    return <div className="TitleDiv">
+    const { avatars } = this.state;
+    return (
+      <div className="TitleDiv">
         {console.log(this.props.allUsers)}
         <h1>Users</h1>
         <section className="topicUserPics">
           {this.props.allUsers.map((user, index) => {
-          return <div className="topicBlock">
+            return (
+              <div className="topicBlock">
                 <Link to={`/users/${user.username}`}>
-                  <img src={`${this.state.avatars[index]}`} className="image" alt={`user${index}s avatar`} />
+                  <img
+                    src={`${avatars[index]}`}
+                    className="image"
+                    alt={`user${index}s avatar`}
+                  />
                   <p key={user._id} className="mapTitles">
                     {user.username}
                   </p>
                 </Link>
-              </div>;
+              </div>
+            );
           })}
         </section>
-      </div>;
+      </div>
+    );
   }
+}
+
+Users.propTypes ={
+  allUsers : propTypes.array.isRequired
 }
 
 export default Users;

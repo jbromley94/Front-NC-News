@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
+import propTypes from "prop-types";
 
 class FixdNavbar extends Component {
   render() {
@@ -17,7 +18,9 @@ class FixdNavbar extends Component {
         <div className="right dropdown">
           <button className="dropbtn">Utilities</button>
           <div className="dropdown-content-right">
-            <Link to="/" onClick={()=> this.props.handleLogout()}>Log Out</Link>
+            <Link to="/" onClick={() => this.props.handleLogout()}>
+              Log Out
+            </Link>
             <Link to="/author">Author</Link>
             <Link to="/info">Info</Link>
             <Link to="/credits">Credits</Link>
@@ -27,5 +30,9 @@ class FixdNavbar extends Component {
     );
   }
 }
+
+FixdNavbar.propTypes = {
+  handleLogout: propTypes.func.isRequired
+};
 
 export default FixdNavbar;

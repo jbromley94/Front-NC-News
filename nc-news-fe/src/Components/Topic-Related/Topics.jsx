@@ -30,7 +30,7 @@ class Topics extends Component {
         <section className="topicUserPics">
           {allTopics.map((topic, index) => {
             return (
-              <div key={topic._id} className="topicBlock">
+              <div key={topic._id} className="imgBlock">
                 <Link to={`/topics/${topic.slug}`}>
                   <img
                     src={`${topicImg[index]}`}

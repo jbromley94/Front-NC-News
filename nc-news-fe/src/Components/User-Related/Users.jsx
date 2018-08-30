@@ -25,7 +25,7 @@ class Users extends Component {
         <section className="topicUserPics">
           {this.props.allUsers.map((user, index) => {
             return (
-              <div className="topicBlock">
+              <div className="imgBlock">
                 <Link to={`/users/${user.username}`}>
                   <img
                     src={`${avatars[index]}`}

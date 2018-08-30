@@ -38,17 +38,16 @@ class Articles extends Component {
               return item._id === article.created_by;
             });
             if (!user) return null;
-            return (
-              <div key={article._id} className="commentAndSingArticle">
+            return <div key={article._id} className="commentAndSingArticle">
                 <Link to={`/articles/${article._id}`}>
-                  <p className="mapTitles">{article.title}</p>
+                  <p className="mapTitles ">{article.title}</p>
                   <p>{`${article.votes}`}</p>
+                  <p>{`${article.belongs_to}`}</p>
                   <p>{`${article.created_at.slice(0, 10)}`}</p>
                   <p>{`${article.created_at.slice(11, 16)}`}</p>
                   <p>{`${user.username}`}</p>
                 </Link>
-              </div>
-            );
+              </div>;
           })}
         </section>
       </div>

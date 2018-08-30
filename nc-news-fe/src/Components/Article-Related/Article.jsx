@@ -4,17 +4,16 @@ import {
   fetchArticle,
   fetchArticleComments,
   voteOnArticle,
-  voteOnComment,
   postComment,
-  deleteComment
 } from "../../Api";
 import { Redirect } from "react-router-dom";
 import propTypes from "prop-types";
 
+import Comments from "../Comments/Comments";
+
 class Article extends Component {
   state = {
     article: {},
-    comments: [],
     voteChangeArt: 0,
     voteCom: 0,
     voteUpCom: false,
@@ -30,8 +29,9 @@ class Article extends Component {
       newMsg,
       errorCode,
       errorMSGS,
-      comments
     } = this.state;
+    const users = this.props.allUsers;
+    const { article_id } = this.props.props.match.params;
     const user = this.props.allUsers.find(item => {
       return item._id === article.created_by;
     });
@@ -53,8 +53,8 @@ class Article extends Component {
           <p>{`${article.body}`}</p>
           <p>{`${article.votes + voteChangeArt}`}</p>
           <div className="createdInfo">
-          <p>{`${article.created_at.slice(0, 10)}`}</p>
-          <p>{`${article.created_at.slice(11, 16)}`}</p>
+            <p>{`${article.created_at.slice(0, 10)}`}</p>
+            <p>{`${article.created_at.slice(11, 16)}`}</p>
           </div>
           <p className="creator">{`${user.username}`}</p>
           <div className="voteButtons">
@@ -74,46 +74,7 @@ class Article extends Component {
             </button>
           </div>
         </div>
-        <section className="allCommentsBoxes">
-          {comments.map(comment => {
-            let comUser = this.props.allUsers.find(item => {
-              return item._id === comment.created_by;
-            });
-            if (!comUser) return null;
-            return (
-              <div
-                key={comment._id}
-                className="commentAndSingArticle commentBox"
-              >
-                <p className="mapTitles">{comment.body}</p>
-                <p className="mapVotes">{comment.votes}</p>
-                <div className="createdInfo">
-                  <p>{`${comment.created_at.slice(0, 10)}`}</p>
-                  <p>{`${comment.created_at.slice(11, 16)}`}</p>
-                </div>
-                <p className="creator">{`${comUser.username}`}</p>
-                <button
-                  className="voteAndDelete"
-                  onClick={() => this.handleUpCom(comment._id)}
-                >
-                  <i className="fas fa-arrow-alt-circle-up" />
-                </button>
-                <button
-                  className="voteAndDelete"
-                  onClick={() => this.handleDownCom(comment._id)}
-                >
-                  <i className="fas fa-arrow-alt-circle-down" />
-                </button>
-                <button
-                  className="voteAndDelete"
-                  onClick={() => this.handleDelete(comment._id)}
-                >
-                  <i className="fas fa-times" />
-                </button>
-              </div>
-            );
-          })}
-        </section>
+        <Comments articleId={article_id} allUsers={users} />
         <input
           className="messagebox"
           value={newMsg}
@@ -127,14 +88,10 @@ class Article extends Component {
 
   componentDidMount() {
     const { article_id } = this.props.props.match.params;
-    return Promise.all([
-      fetchArticle(article_id),
-      fetchArticleComments(article_id)
-    ])
-      .then(([res1, res2]) => {
+    fetchArticle(article_id)
+      .then(articles => {
         this.setState({
-          article: res1.data.article,
-          comments: res2.data.comments_by_article
+          article: articles.data.article
         });
       })
       .catch(err => {
@@ -144,30 +101,22 @@ class Article extends Component {
         });
       });
   }
-  
+
   componentDidUpdate() {
     if (this.state.needToUpdate === true) {
       const { article_id } = this.props.props.match.params;
       return Promise.all([
         fetchArticle(article_id),
         fetchArticleComments(article_id)
-      ]).then(([res1, res2]) => {
+      ]).then(([articles, comments]) => {
         this.setState({
-          article: res1.data.article,
-          comments: res2.data.comments_by_article,
+          article: articles.data.article,
+          comments: comments.data.comments_by_article,
           needToUpdate: false
         });
       });
     }
   }
-
-  handleDelete = id => {
-    deleteComment(id).then(response => {
-      this.setState({
-        needToUpdate: true
-      });
-    });
-  };
 
   handleChange = text => {
     this.setState({ newMsg: text.target.value });
@@ -217,42 +166,11 @@ class Article extends Component {
       }
     }
   };
-
-  handleUpCom = comment_id => {
-    if (this.state.voteCom < 1 && this.state.voteUpCom === false) {
-      voteOnComment(comment_id, "up").then(response => {
-        this.setState({
-          voteCom: this.state.voteCom + 1,
-          voteUpCom: true,
-          voteDownCom: false,
-          needToUpdate: true
-        });
-      });
-    } else {
-      alert(`You've voted enough on that comment`);
-    }
-  };
-
-  handleDownCom = comment_id => {
-    if (this.state.voteCom > -1 && this.state.voteDownCom === false) {
-      voteOnComment(comment_id, "down").then(response => {
-        this.setState({
-          voteCom: this.state.voteCom - 1,
-          voteUpCom: false,
-          voteDownCom: true,
-          needToUpdate: true
-        });
-      });
-    } else {
-      alert(`You've voted enough on that comment`);
-    }
-  };
 }
 
 Article.propTypes = {
   allUsers: propTypes.array.isRequired,
   currentUser: propTypes.string.isRequired
-}
-
+};
 
 export default Article;

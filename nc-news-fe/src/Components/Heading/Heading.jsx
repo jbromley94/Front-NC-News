@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import "./Heading.css";
 import NavBar from "../Navbar/NavbarFloat";
 import propTypes from "prop-types";
+import { Link, Redirect } from "react-router-dom";
+
 
 class Heading extends Component {
   render() {
     return (
       <div>
-        <h1 className="Title">Northcoders News</h1>
+        <Link to={`/`} > <button className="Title">Northcoders News</button>
+</Link>
         <NavBar handleLogout={this.props.handleLogout} />
       </div>
     );
